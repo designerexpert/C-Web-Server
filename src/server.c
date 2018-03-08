@@ -203,7 +203,7 @@ int send_response(int fd, char *header, char *content_type, char *body)
   int response_length;
 
   // !!!!  IMPLEMENT ME
-  printf("Reached the Send_response");
+  //printf("Reached the Send_response");
   response_length = sprintf(response, "%s\nWed Dec 20 13:05:11 PST 2017\nConnection: close\nContent-Length: %lu\nContent-Type: %s\n\n%s",
                             header,
                             strlen(body),
@@ -249,7 +249,7 @@ void get_d20(int fd)
 {
   // !!!! IMPLEMENT ME
   int roll = (rand() % 20) + 1;
-  char response_body[6553];
+  char response_body[1024];
 
   sprintf(response_body, "Your Number is: %d", roll);
   send_response(fd, "HTTP/1.1 200 OK", "text/plain", response_body);
@@ -280,7 +280,9 @@ void get_date(int fd)
 void post_save(int fd, char *body)
 {
   // !!!! IMPLEMENT ME
+  char response_body[65536];
 
+  send_response(fd, "HTTP/1.1 200 OK", "application/json", "{\" status \":\" ok \"}");
   // Save the body and send a response
 }
 
@@ -350,6 +352,7 @@ void handle_http_request(int fd)
   }
   if (strcmp(request_type, "POST") == 0) // Handle POST Request
   {
+    post_save(fd, request);
   }
 }
 
